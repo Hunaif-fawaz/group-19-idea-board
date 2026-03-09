@@ -5,125 +5,187 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Group Idea Board</title>
 
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
 
 body{
-    font-family: Arial, Helvetica, sans-serif;
-    background:#f2f2f2;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background: linear-gradient(135deg,#667eea,#764ba2);
+font-family: 'Segoe UI', sans-serif;
 }
 
-.container{
-    width:600px;
-    margin:80px auto;
-    background:white;
-    border-radius:8px;
-    box-shadow:0px 4px 10px rgba(0,0,0,0.2);
+.glass-card{
+width:100%;
+max-width:500px;
+background: rgba(255,255,255,0.15);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border-radius:20px;
+padding:30px;
+box-shadow:0 8px 32px rgba(0,0,0,0.2);
+border:1px solid rgba(255,255,255,0.2);
 }
 
-.header{
-    background:#3b6db1;
-    color:white;
-    padding:15px;
-    text-align:center;
-    font-size:20px;
-    border-top-left-radius:8px;
-    border-top-right-radius:8px;
+.title{
+font-weight:600;
+text-align:center;
+color:white;
+margin-bottom:25px;
 }
 
-.input-area{
-    padding:20px;
+.form-control, .form-select{
+border-radius:10px;
 }
 
-select, input{
-    padding:8px;
-    margin-right:10px;
-    border:1px solid #ccc;
-    border-radius:4px;
+.add-btn{
+border-radius:10px;
+font-weight:500;
+padding:10px;
+transition:0.3s;
 }
 
-button{
-    padding:8px 14px;
-    background:#3b6db1;
-    color:white;
-    border:none;
-    border-radius:4px;
-    cursor:pointer;
+.add-btn:hover{
+transform:scale(1.05);
 }
 
-button:hover{
-    background:#2e5791;
+.idea-list{
+margin-top:25px;
 }
 
-ul{
-    margin-top:20px;
-}
-
-li{
-    margin-bottom:8px;
+.idea-item{
+background:rgba(255,255,255,0.25);
+border-radius:10px;
+padding:10px 15px;
+margin-bottom:10px;
+color:white;
 }
 
 .suggested{
-    color:gray;
-    font-style:italic;
+font-size:0.9em;
+opacity:0.8;
+font-style:italic;
+}
+
+@media(max-width:576px){
+
+.glass-card{
+margin:20px;
+padding:20px;
+}
+
+.title{
+font-size:22px;
+}
+
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="glass-card">
 
-<div class="header">
-Group Idea Board
-</div>
+<h3 class="title">💡 Group Idea Board</h3>
 
-<div class="input-area">
+<div class="row g-2">
 
-<select id="name">
-<option value="">Select your name...</option>
+<div class="col-12 col-md-4">
+<select id="name" class="form-select" onchange="filterIdeas()">
+<option value="">Select name</option>
 <option>Nimal</option>
 <option>Sara</option>
 <option>Alex</option>
 <option>Hunaif</option>
 </select>
+</div>
 
-<input type="text" id="idea" placeholder="Enter your idea here...">
+<div class="col-12 col-md-5">
+<input type="text" id="idea" class="form-control" placeholder="Enter your idea">
+</div>
 
-<button onclick="addIdea()">Add Idea</button>
+<div class="col-12 col-md-3 d-grid">
+<button class="btn btn-primary add-btn" onclick="addIdea()">Add</button>
+</div>
 
-<ul id="ideaList">
+</div>
 
-<li>Build a study planner – <span class="suggested">suggested by Nimal</span></li>
-<li>Start a podcast – <span class="suggested">suggested by Sara</span></li>
-<li>Organize a coding workshop – <span class="suggested">suggested by Alex</span></li>
+<ul id="ideaList" class="idea-list list-unstyled">
+
+<li class="idea-item" data-user="Nimal">
+Build a study planner
+<span class="suggested"> – suggested by Nimal</span>
+</li>
+
+<li class="idea-item" data-user="Sara">
+Start a podcast
+<span class="suggested"> – suggested by Sara</span>
+</li>
+
+<li class="idea-item" data-user="Alex">
+Organize a coding workshop
+<span class="suggested"> – suggested by Alex</span>
+</li>
 
 </ul>
 
-</div>
 </div>
 
 <script>
 
 function addIdea(){
 
-let name=document.getElementById("name").value;
-let idea=document.getElementById("idea").value;
+let name=document.getElementById("name").value
+let idea=document.getElementById("idea").value
 
 if(name=="" || idea==""){
-    alert("Please select your name and enter an idea");
-    return;
+alert("Please select name and enter idea")
+return
 }
 
-let list=document.getElementById("ideaList");
+let list=document.getElementById("ideaList")
 
-let li=document.createElement("li");
+let li=document.createElement("li")
 
-li.innerHTML = idea + " – <span class='suggested'>suggested by " + name + "</span>";
+li.className="idea-item"
+li.setAttribute("data-user",name)
 
-list.appendChild(li);
+li.innerHTML = `
+${idea}
+<span class="suggested"> – suggested by ${name}</span>
+`
 
-document.getElementById("idea").value="";
+list.appendChild(li)
+
+document.getElementById("idea").value=""
+
+filterIdeas()
+
+}
+
+function filterIdeas(){
+
+let selectedUser=document.getElementById("name").value
+let ideas=document.querySelectorAll(".idea-item")
+
+ideas.forEach(function(item){
+
+let ideaUser=item.getAttribute("data-user")
+
+if(selectedUser=="" || selectedUser==ideaUser){
+item.style.display="block"
+}
+else{
+item.style.display="none"
+}
+
+})
 
 }
 
