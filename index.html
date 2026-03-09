@@ -1,1 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group Idea Board</title>
 
+<style>
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f2f2f2;
+}
+
+.container{
+    width:600px;
+    margin:80px auto;
+    background:white;
+    border-radius:8px;
+    box-shadow:0px 4px 10px rgba(0,0,0,0.2);
+}
+
+.header{
+    background:#3b6db1;
+    color:white;
+    padding:15px;
+    text-align:center;
+    font-size:20px;
+    border-top-left-radius:8px;
+    border-top-right-radius:8px;
+}
+
+.input-area{
+    padding:20px;
+}
+
+select, input{
+    padding:8px;
+    margin-right:10px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+
+button{
+    padding:8px 14px;
+    background:#3b6db1;
+    color:white;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2e5791;
+}
+
+ul{
+    margin-top:20px;
+}
+
+li{
+    margin-bottom:8px;
+}
+
+.suggested{
+    color:gray;
+    font-style:italic;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+Group Idea Board
+</div>
+
+<div class="input-area">
+
+<select id="name">
+<option value="">Select your name...</option>
+<option>Nimal</option>
+<option>Sara</option>
+<option>Alex</option>
+<option>Hunaif</option>
+</select>
+
+<input type="text" id="idea" placeholder="Enter your idea here...">
+
+<button onclick="addIdea()">Add Idea</button>
+
+<ul id="ideaList">
+
+<li>Build a study planner – <span class="suggested">suggested by Nimal</span></li>
+<li>Start a podcast – <span class="suggested">suggested by Sara</span></li>
+<li>Organize a coding workshop – <span class="suggested">suggested by Alex</span></li>
+
+</ul>
+
+</div>
+</div>
+
+<script>
+
+function addIdea(){
+
+let name=document.getElementById("name").value;
+let idea=document.getElementById("idea").value;
+
+if(name=="" || idea==""){
+    alert("Please select your name and enter an idea");
+    return;
+}
+
+let list=document.getElementById("ideaList");
+
+let li=document.createElement("li");
+
+li.innerHTML = idea + " – <span class='suggested'>suggested by " + name + "</span>";
+
+list.appendChild(li);
+
+document.getElementById("idea").value="";
+
+}
+
+</script>
+
+</body>
+</html>
