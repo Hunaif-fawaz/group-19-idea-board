@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Group Idea Board</title>
 
-<!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 
 body{
-height:100vh;
+min-height:100vh;
 display:flex;
 justify-content:center;
-align-items:center;
+align-items:flex-start;
 background: linear-gradient(135deg,#667eea,#764ba2);
 font-family: 'Segoe UI', sans-serif;
+padding:40px 15px;
 }
 
 .glass-card{
@@ -35,11 +35,26 @@ border:1px solid rgba(255,255,255,0.2);
 font-weight:600;
 text-align:center;
 color:white;
-margin-bottom:25px;
+margin-bottom:10px;
+}
+
+.logo{
+display:block;
+margin:0 auto 10px auto;
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid white;
 }
 
 .form-control, .form-select{
 border-radius:10px;
+}
+
+.center-dropdown{
+max-width:220px;
+margin:auto;
 }
 
 .add-btn{
@@ -71,6 +86,18 @@ opacity:0.8;
 font-style:italic;
 }
 
+.vote-btn{
+margin-left:10px;
+cursor:pointer;
+}
+
+.total-box{
+margin-top:15px;
+text-align:center;
+color:white;
+font-weight:500;
+}
+
 @media(max-width:576px){
 
 .glass-card{
@@ -85,55 +112,112 @@ font-size:22px;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="glass-card">
 
+<!-- Logo -->
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo">
+
 <h3 class="title">💡 Group Idea Board</h3>
 
+<!-- Name Dropdown -->
 <div class="row g-2">
 
-<div class="col-12 col-md-4">
-<select id="name" class="form-select" onchange="filterIdeas()">
+<div class="col-12 center-dropdown">
+<select id="name" class="form-select text-center" onchange="filterIdeas()">
 <option value="">Select name</option>
-<option>Nimal</option>
-<option>Sara</option>
-<option>Alex</option>
+<option>Kavindu</option>
+<option>Thilina</option>
+<option>Gihan</option>
 <option>Hunaif</option>
+<option>Dewmini</option>
+<option>Hana</option>
+<option>Minuka</option>
+<option>Thaviru</option>
 </select>
 </div>
 
-<div class="col-12 col-md-5">
+<div class="col-12">
 <input type="text" id="idea" class="form-control" placeholder="Enter your idea">
 </div>
 
-<div class="col-12 col-md-3 d-grid">
-<button class="btn btn-primary add-btn" onclick="addIdea()">Add</button>
 </div>
+
+<!-- Buttons -->
+<div class="text-center mt-3">
+
+<button class="btn btn-primary add-btn me-2" style="width:120px" onclick="addIdea()">Add</button>
+
+<button class="btn btn-primary add-btn" style="width:120px" onclick="clearInput()">Clear</button>
 
 </div>
 
 <ul id="ideaList" class="idea-list list-unstyled">
 
-<li class="idea-item" data-user="Nimal">
+<li class="idea-item" data-user="Kavindu">
 Build a study planner
-<span class="suggested"> – suggested by Nimal</span>
+<span class="suggested"> – suggested by Kavindu</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
 </li>
 
-<li class="idea-item" data-user="Sara">
+<li class="idea-item" data-user="Thilina">
 Start a podcast
-<span class="suggested"> – suggested by Sara</span>
+<span class="suggested"> – suggested by Thilina</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
 </li>
 
-<li class="idea-item" data-user="Alex">
+<li class="idea-item" data-user="Gihan">
 Organize a coding workshop
-<span class="suggested"> – suggested by Alex</span>
+<span class="suggested"> – suggested by Gihan</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
+</li>
+
+<li class="idea-item" data-user="Hunaif">
+Create a mobile app for student tasks
+<span class="suggested"> – suggested by Hunaif</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
+</li>
+
+<li class="idea-item" data-user="Dewmini">
+Design a campus event poster series
+<span class="suggested"> – suggested by Dewmini</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
+</li>
+
+<li class="idea-item" data-user="Hana">
+Start a book club
+<span class="suggested"> – suggested by Hana</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
+</li>
+
+<li class="idea-item" data-user="Minuka">
+Develop a campus feedback system
+<span class="suggested"> – suggested by Minuka</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
+</li>
+
+<li class="idea-item" data-user="Thaviru">
+Organize an online coding challenge
+<span class="suggested"> – suggested by Thaviru</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
 </li>
 
 </ul>
+
+<div class="total-box">
+Total Ideas: <span id="totalIdeas">8</span>
+</div>
 
 </div>
 
@@ -159,14 +243,23 @@ li.setAttribute("data-user",name)
 li.innerHTML = `
 ${idea}
 <span class="suggested"> – suggested by ${name}</span>
+
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
 `
 
 list.appendChild(li)
 
 document.getElementById("idea").value=""
 
+updateTotal()
+
 filterIdeas()
 
+}
+
+function clearInput(){
+document.getElementById("idea").value=""
 }
 
 function filterIdeas(){
@@ -186,6 +279,27 @@ item.style.display="none"
 }
 
 })
+
+}
+
+function updateTotal(){
+
+let total=document.querySelectorAll(".idea-item").length
+document.getElementById("totalIdeas").innerText=total
+
+}
+
+function likeIdea(btn){
+
+let count=btn.querySelector("span")
+count.innerText=parseInt(count.innerText)+1
+
+}
+
+function dislikeIdea(btn){
+
+let count=btn.querySelector("span")
+count.innerText=parseInt(count.innerText)+1
 
 }
 
