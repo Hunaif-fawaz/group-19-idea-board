@@ -257,7 +257,7 @@ Student Toolkit
 
 <div id="timerDisplay">25:00</div>
 
-<button class="btn btn-light mt-2 me-2" onclick="startTimer()">Start</button>
+<button id="startBtn" class="btn btn-light mt-2 me-2" onclick="startTimer()">Start</button>
 <button class="btn btn-light mt-2" onclick="resetTimer()">Reset</button>
 
 </div>
@@ -349,7 +349,8 @@ document.getElementById("gpaResult").innerText="Overall GPA: "+gpa.toFixed(2)
 /* POMODORO TIMER */
 
 let time=1500
-let timer
+let timerId=null
+const bell=new Audio("https://www.soundjay.com/buttons/sounds/bell-ringing-05.mp3")
 
 function updateTimer(){
 
@@ -365,7 +366,16 @@ document.getElementById("timerDisplay").innerText=minutes+":"+seconds
 
 function startTimer(){
 
-timer=setInterval(function(){
+if(timerId!==null) return
+
+if(time<=0){
+time=1500
+updateTimer()
+}
+
+document.getElementById("startBtn").disabled=true
+
+timerId=setInterval(function(){
 
 time--
 
@@ -373,9 +383,15 @@ updateTimer()
 
 if(time<=0){
 
-clearInterval(timer)
+time=0
+updateTimer()
 
-let bell=new Audio("https://www.soundjay.com/buttons/sounds/bell-ringing-05.mp3")
+clearInterval(timerId)
+timerId=null
+
+document.getElementById("startBtn").disabled=false
+
+bell.currentTime=0
 bell.play()
 
 alert("Pomodoro Session Finished!")
@@ -388,9 +404,13 @@ alert("Pomodoro Session Finished!")
 
 function resetTimer(){
 
-clearInterval(timer)
+if(timerId!==null){
+clearInterval(timerId)
+timerId=null
+}
 time=1500
 updateTimer()
+document.getElementById("startBtn").disabled=false
 
 }
 
