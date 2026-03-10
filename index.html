@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Group Idea Board</title>
+<title>student_toolkit</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -12,16 +12,32 @@
 body{
 min-height:100vh;
 display:flex;
-justify-content:center;
-align-items:flex-start;
+flex-direction:column;
+justify-content:flex-start;
+align-items:center;
 background: linear-gradient(135deg,#667eea,#764ba2);
 font-family: 'Segoe UI', sans-serif;
 padding:40px 15px;
 }
 
+.page-wrap{
+width:100%;
+max-width:760px;
+}
+
+.glass-nav{
+width:100%;
+background: rgba(255,255,255,0.12);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border-radius:18px;
+box-shadow:0 8px 32px rgba(0,0,0,0.18);
+border:1px solid rgba(255,255,255,0.18);
+margin-bottom:18px;
+}
+
 .glass-card{
 width:100%;
-max-width:500px;
 background: rgba(255,255,255,0.15);
 backdrop-filter: blur(12px);
 -webkit-backdrop-filter: blur(12px);
@@ -29,6 +45,7 @@ border-radius:20px;
 padding:30px;
 box-shadow:0 8px 32px rgba(0,0,0,0.2);
 border:1px solid rgba(255,255,255,0.2);
+margin-bottom:18px;
 }
 
 .title{
@@ -36,6 +53,13 @@ font-weight:600;
 text-align:center;
 color:white;
 margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:rgba(255,255,255,0.85);
+font-size:0.95rem;
+margin-bottom:18px;
 }
 
 .logo{
@@ -55,6 +79,22 @@ border-radius:10px;
 .center-dropdown{
 max-width:220px;
 margin:auto;
+}
+
+.section-label{
+color:white;
+font-weight:600;
+margin-bottom:12px;
+display:flex;
+align-items:baseline;
+justify-content:space-between;
+gap:12px;
+}
+
+.section-hint{
+font-weight:400;
+opacity:0.85;
+font-size:0.9rem;
 }
 
 .add-btn{
@@ -98,12 +138,31 @@ color:white;
 font-weight:500;
 }
 
+.result-pill{
+display:inline-block;
+background:rgba(255,255,255,0.22);
+border:1px solid rgba(255,255,255,0.22);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border-radius:999px;
+padding:8px 12px;
+color:white;
+font-weight:600;
+}
+
+.timer-display{
+font-variant-numeric: tabular-nums;
+letter-spacing:0.5px;
+font-size:40px;
+line-height:1.1;
+color:white;
+text-align:center;
+margin:10px 0 14px 0;
+}
+
 @media(max-width:576px){
 
-.glass-card{
-margin:20px;
-padding:20px;
-}
+.glass-card{ padding:20px; }
 
 .title{
 font-size:22px;
@@ -116,12 +175,29 @@ font-size:22px;
 
 <body>
 
-<div class="glass-card">
+<div class="page-wrap" id="top">
+
+<nav class="navbar navbar-expand-lg navbar-dark glass-nav px-3 py-2">
+  <a class="navbar-brand fw-semibold" href="#top">student_toolkit</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="mainNav">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="#idea-board">Idea Board</a></li>
+      <li class="nav-item"><a class="nav-link" href="#gpa-calculator">GPA Calculator</a></li>
+      <li class="nav-item"><a class="nav-link" href="#study-timer">Study Timer</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="idea-board" class="glass-card">
 
 <!-- Logo -->
 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo">
 
-<h3 class="title">💡 Group Idea Board</h3>
+<h3 class="title">student_toolkit</h3>
+<div class="subtitle">Idea board, GPA calculator, and a study timer in one page.</div>
 
 <!-- Name Dropdown -->
 <div class="row g-2">
@@ -303,6 +379,195 @@ count.innerText=parseInt(count.innerText)+1
 
 }
 
+</script>
+
+</div>
+
+<div id="gpa-calculator" class="glass-card">
+  <div class="section-label">
+    <div>GPA Calculator</div>
+    <div class="section-hint">Weighted by credits</div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-sm table-borderless align-middle mb-2">
+      <thead>
+        <tr class="text-white-50">
+          <th style="min-width:140px">Course</th>
+          <th style="width:110px">Credits</th>
+          <th style="width:140px">Grade</th>
+          <th style="width:60px"></th>
+        </tr>
+      </thead>
+      <tbody id="gpaRows"></tbody>
+    </table>
+  </div>
+
+  <div class="d-flex flex-wrap gap-2 justify-content-center mt-2">
+    <button class="btn btn-primary add-btn" style="width:160px" onclick="addGpaRow()">Add Course</button>
+    <button class="btn btn-outline-light add-btn" style="width:160px" onclick="calcGpa()">Calculate</button>
+  </div>
+
+  <div class="text-center mt-3">
+    <span class="result-pill">GPA: <span id="gpaOut">0.00</span></span>
+  </div>
+</div>
+
+<div id="study-timer" class="glass-card">
+  <div class="section-label">
+    <div>Study Timer</div>
+    <div class="section-hint">Simple countdown</div>
+  </div>
+
+  <div class="row g-2 align-items-end">
+    <div class="col-12 col-sm-6">
+      <label class="form-label text-white-50 mb-1" for="timerMinutes">Minutes</label>
+      <input id="timerMinutes" type="number" min="1" max="240" class="form-control" value="25">
+    </div>
+    <div class="col-12 col-sm-6 d-grid">
+      <button class="btn btn-outline-light add-btn" onclick="setTimerFromInput()">Set</button>
+    </div>
+  </div>
+
+  <div class="timer-display" id="timerDisplay">25:00</div>
+
+  <div class="d-flex flex-wrap gap-2 justify-content-center">
+    <button class="btn btn-primary add-btn" style="width:140px" onclick="startTimer()">Start</button>
+    <button class="btn btn-outline-light add-btn" style="width:140px" onclick="pauseTimer()">Pause</button>
+    <button class="btn btn-outline-light add-btn" style="width:140px" onclick="resetTimer()">Reset</button>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// -------- GPA calculator --------
+const gradeOptions = [
+  { label: "A+", points: 4.0 },
+  { label: "A", points: 4.0 },
+  { label: "A-", points: 3.7 },
+  { label: "B+", points: 3.3 },
+  { label: "B", points: 3.0 },
+  { label: "B-", points: 2.7 },
+  { label: "C+", points: 2.3 },
+  { label: "C", points: 2.0 },
+  { label: "C-", points: 1.7 },
+  { label: "D+", points: 1.3 },
+  { label: "D", points: 1.0 },
+  { label: "F", points: 0.0 }
+];
+
+function addGpaRow(courseName = "", credits = 3, gradePoints = 4.0){
+  const tbody = document.getElementById("gpaRows");
+  const tr = document.createElement("tr");
+
+  const gradeSelect = document.createElement("select");
+  gradeSelect.className = "form-select";
+  gradeOptions.forEach(opt => {
+    const o = document.createElement("option");
+    o.value = String(opt.points);
+    o.textContent = `${opt.label} (${opt.points.toFixed(1)})`;
+    if (Number(opt.points) === Number(gradePoints)) o.selected = true;
+    gradeSelect.appendChild(o);
+  });
+
+  tr.innerHTML = `
+    <td><input type="text" class="form-control" placeholder="e.g. CS101" value=""></td>
+    <td><input type="number" min="0" step="0.5" class="form-control" value="3"></td>
+    <td></td>
+    <td class="text-end"><button class="btn btn-sm btn-outline-light" type="button">Remove</button></td>
+  `;
+
+  tr.querySelector('td:nth-child(1) input').value = courseName;
+  tr.querySelector('td:nth-child(2) input').value = String(credits);
+  tr.querySelector('td:nth-child(3)').appendChild(gradeSelect);
+  tr.querySelector('button').addEventListener("click", () => {
+    tr.remove();
+    calcGpa();
+  });
+
+  tbody.appendChild(tr);
+}
+
+function calcGpa(){
+  const rows = Array.from(document.querySelectorAll("#gpaRows tr"));
+  let totalCredits = 0;
+  let totalPoints = 0;
+
+  rows.forEach(tr => {
+    const credits = Number(tr.querySelector('td:nth-child(2) input').value || 0);
+    const grade = Number(tr.querySelector('td:nth-child(3) select').value || 0);
+    if (credits > 0){
+      totalCredits += credits;
+      totalPoints += credits * grade;
+    }
+  });
+
+  const gpa = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
+  document.getElementById("gpaOut").textContent = gpa.toFixed(2);
+}
+
+// Seed a few rows
+addGpaRow("CS101", 3, 4.0);
+addGpaRow("MA102", 3, 3.7);
+addGpaRow("EN103", 2, 3.3);
+calcGpa();
+
+// -------- Study timer --------
+let timerTotalSeconds = 25 * 60;
+let timerRemainingSeconds = timerTotalSeconds;
+let timerInterval = null;
+
+function formatTime(seconds){
+  const s = Math.max(0, Math.floor(seconds));
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${String(m).padStart(2,"0")}:${String(r).padStart(2,"0")}`;
+}
+
+function renderTimer(){
+  document.getElementById("timerDisplay").textContent = formatTime(timerRemainingSeconds);
+}
+
+function setTimerFromInput(){
+  const minutes = Number(document.getElementById("timerMinutes").value || 0);
+  const clamped = Math.min(240, Math.max(1, Math.floor(minutes)));
+  document.getElementById("timerMinutes").value = String(clamped);
+  timerTotalSeconds = clamped * 60;
+  timerRemainingSeconds = timerTotalSeconds;
+  renderTimer();
+}
+
+function startTimer(){
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
+    timerRemainingSeconds -= 1;
+    if (timerRemainingSeconds <= 0){
+      timerRemainingSeconds = 0;
+      renderTimer();
+      pauseTimer();
+      try { alert("Time is up!"); } catch {}
+      return;
+    }
+    renderTimer();
+  }, 1000);
+}
+
+function pauseTimer(){
+  if (!timerInterval) return;
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function resetTimer(){
+  pauseTimer();
+  timerRemainingSeconds = timerTotalSeconds;
+  renderTimer();
+}
+
+renderTimer();
 </script>
 
 </body>
