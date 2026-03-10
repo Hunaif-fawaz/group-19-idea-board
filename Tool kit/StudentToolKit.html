@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Toolkit + Idea Board</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+min-height:100vh;
+background: linear-gradient(135deg,#667eea,#764ba2);
+font-family:'Segoe UI',sans-serif;
+color:white;
+padding:20px;
+}
+
+/* Navbar */
+
+.navbar{
+background: rgba(255,255,255,0.15);
+backdrop-filter: blur(12px);
+border-radius:10px;
+}
+
+/* Glass */
+
+.glass-card{
+background: rgba(255,255,255,0.15);
+backdrop-filter: blur(12px);
+border-radius:20px;
+padding:25px;
+box-shadow:0 8px 32px rgba(0,0,0,0.2);
+border:1px solid rgba(255,255,255,0.2);
+margin-bottom:20px;
+}
+
+/* Sidebar */
+
+.sidebar{
+min-height:300px;
+}
+
+/* Idea board */
+
+.title{
+text-align:center;
+margin-bottom:15px;
+}
+
+.logo{
+display:block;
+margin:0 auto 10px auto;
+width:60px;
+border-radius:50%;
+border:2px solid white;
+}
+
+.idea-item{
+background:rgba(255,255,255,0.25);
+border-radius:10px;
+padding:10px;
+margin-bottom:10px;
+}
+
+.suggested{
+font-size:0.9em;
+font-style:italic;
+opacity:0.8;
+}
+
+.vote-btn{
+margin-left:10px;
+cursor:pointer;
+}
+
+.center-dropdown{
+max-width:220px;
+margin:auto;
+}
+
+.add-btn{
+border-radius:10px;
+}
+
+.total-box{
+text-align:center;
+margin-top:10px;
+}
+
+#timerDisplay{
+font-size:35px;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-expand-lg navbar-dark px-3 mb-4">
+
+<a class="navbar-brand fw-bold">Student Toolkit</a>
+
+<ul class="navbar-nav ms-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="#gpa">GPA Calculator</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="#timer">Study Timer</a>
+</li>
+
+</ul>
+
+</nav>
+
+
+<div class="container-fluid">
+
+<div class="row">
+
+<!-- SIDEBAR -->
+
+<div class="col-md-3">
+
+<div class="glass-card sidebar">
+
+<h4>Upcoming Events</h4>
+
+<ul>
+<li>Assignment Due – March 15</li>
+<li>Math Quiz – March 18</li>
+<li>Project Meeting – March 20</li>
+<li>Final Demo – March 25</li>
+</ul>
+
+</div>
+
+</div>
+
+
+<!-- MAIN CONTENT -->
+
+<div class="col-md-9">
+
+<!-- GPA CALCULATOR -->
+
+<div id="gpa" class="glass-card">
+
+<h3>GPA Calculator</h3>
+
+<div class="row g-2">
+
+<div class="col-md-4">
+<input type="number" id="g1" class="form-control" placeholder="Subject 1">
+</div>
+
+<div class="col-md-4">
+<input type="number" id="g2" class="form-control" placeholder="Subject 2">
+</div>
+
+<div class="col-md-4">
+<input type="number" id="g3" class="form-control" placeholder="Subject 3">
+</div>
+
+</div>
+
+<button class="btn btn-light mt-3" onclick="calculateGPA()">Calculate</button>
+
+<h5 class="mt-3" id="gpaResult"></h5>
+
+</div>
+
+
+<!-- STUDY TIMER -->
+
+<div id="timer" class="glass-card">
+
+<h3>Study Timer</h3>
+
+<div id="timerDisplay">00:00</div>
+
+<button class="btn btn-light mt-2 me-2" onclick="startTimer()">Start</button>
+<button class="btn btn-light mt-2 me-2" onclick="pauseTimer()">Pause</button>
+<button class="btn btn-light mt-2" onclick="resetTimer()">Reset</button>
+
+</div>
+
+
+<!-- IDEA BOARD (Your Original Feature) -->
+
+<div class="glass-card">
+
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo">
+
+<h3 class="title">💡 Group Idea Board</h3>
+
+<div class="row g-2">
+
+<div class="col-12 center-dropdown">
+<select id="name" class="form-select text-center" onchange="filterIdeas()">
+
+<option value="">Select name</option>
+<option>Kavindu</option>
+<option>Thilina</option>
+<option>Gihan</option>
+<option>Hunaif</option>
+<option>Dewmini</option>
+<option>Hana</option>
+<option>Minuka</option>
+<option>Thaviru</option>
+
+</select>
+</div>
+
+<div class="col-12">
+<input type="text" id="idea" class="form-control" placeholder="Enter your idea">
+</div>
+
+</div>
+
+<div class="text-center mt-3">
+
+<button class="btn btn-primary add-btn me-2" onclick="addIdea()">Add</button>
+<button class="btn btn-secondary add-btn" onclick="clearInput()">Clear</button>
+
+</div>
+
+
+<ul id="ideaList" class="list-unstyled mt-3">
+
+</ul>
+
+<div class="total-box">
+Total Ideas: <span id="totalIdeas">0</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* GPA */
+
+function calculateGPA(){
+
+let g1=parseFloat(document.getElementById("g1").value)||0
+let g2=parseFloat(document.getElementById("g2").value)||0
+let g3=parseFloat(document.getElementById("g3").value)||0
+
+let avg=(g1+g2+g3)/3
+
+document.getElementById("gpaResult").innerText="Average GPA: "+avg.toFixed(2)
+
+}
+
+
+/* TIMER */
+
+let seconds=0
+let timer
+let running=false
+
+function updateDisplay(){
+
+let m=Math.floor(seconds/60)
+let s=seconds%60
+
+if(m<10)m="0"+m
+if(s<10)s="0"+s
+
+document.getElementById("timerDisplay").innerText=m+":"+s
+
+}
+
+function startTimer(){
+
+if(!running){
+
+running=true
+
+timer=setInterval(function(){
+
+seconds++
+updateDisplay()
+
+},1000)
+
+}
+
+}
+
+function pauseTimer(){
+
+running=false
+clearInterval(timer)
+
+}
+
+function resetTimer(){
+
+seconds=0
+running=false
+clearInterval(timer)
+updateDisplay()
+
+}
+
+
+/* IDEA BOARD */
+
+function addIdea(){
+
+let name=document.getElementById("name").value
+let idea=document.getElementById("idea").value
+
+if(name=="" || idea==""){
+alert("Please select name and enter idea")
+return
+}
+
+let list=document.getElementById("ideaList")
+
+let li=document.createElement("li")
+
+li.className="idea-item"
+li.setAttribute("data-user",name)
+
+li.innerHTML=`
+${idea}
+<span class="suggested"> – suggested by ${name}</span>
+<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
+<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
+`
+
+list.appendChild(li)
+
+document.getElementById("idea").value=""
+
+updateTotal()
+
+filterIdeas()
+
+}
+
+function clearInput(){
+document.getElementById("idea").value=""
+}
+
+function filterIdeas(){
+
+let selectedUser=document.getElementById("name").value
+let ideas=document.querySelectorAll(".idea-item")
+
+ideas.forEach(function(item){
+
+let ideaUser=item.getAttribute("data-user")
+
+if(selectedUser=="" || selectedUser==ideaUser){
+item.style.display="block"
+}
+else{
+item.style.display="none"
+}
+
+})
+
+}
+
+function updateTotal(){
+
+let total=document.querySelectorAll(".idea-item").length
+document.getElementById("totalIdeas").innerText=total
+
+}
+
+function likeIdea(btn){
+
+let count=btn.querySelector("span")
+count.innerText=parseInt(count.innerText)+1
+
+}
+
+function dislikeIdea(btn){
+
+let count=btn.querySelector("span")
+count.innerText=parseInt(count.innerText)+1
+
+}
+
+</script>
+
+</body>
+</html>
