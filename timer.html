@@ -8,20 +8,56 @@
 <style>
 body{ min-height:100vh; background: linear-gradient(135deg,#800000,#FFD700); font-family:'Segoe UI',sans-serif; color:white; padding:20px; transition:0.3s; }
 .dark-mode{ background:#111 !important; color:white; }
-.navbar{ background: rgba(128,0,0,0.9); backdrop-filter: blur(12px); border-radius:10px; }
+
+/* Standard navbar styling for all pages */
+.navbar{
+  background: rgba(128,0,0,0.9);
+  backdrop-filter: blur(12px);
+  border-radius:10px;
+  padding:0.5rem 1rem; /* same padding as main page */
+}
+
+.navbar-brand{
+  display:flex;
+  align-items:center;
+  font-weight:bold;
+  font-size:1.25rem;
+}
+
+.navbar-brand img{
+  height:40px;
+  width:40px;
+  margin-right:10px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid gold;
+}
+
+.navbar-nav .nav-link{
+  font-size:1rem;
+  padding:0.5rem 1rem;
+}
+
 .glass-card{ background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); border-radius:20px; padding:25px; box-shadow:0 8px 32px rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.2); margin-bottom:20px; text-align:center;}
 #timerDisplay{font-size:40px;font-weight:bold;}
 </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark px-3 mb-4">
-<a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
-<img src="ucsc.png" class="ucsc-logo" style="height:40px;width:40px;margin-right:10px;"> Student Toolkit
-</a>
-<div class="form-check form-switch text-white ms-3">
-<input class="form-check-input" type="checkbox" onclick="toggleDarkMode()">
-<label class="form-check-label">Dark Mode</label>
-</div>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark mb-4">
+  <a class="navbar-brand" href="index.html">
+    <img src="ucsc.png" alt="Logo"> Student Toolkit
+  </a>
+  <ul class="navbar-nav ms-auto">
+    <li class="nav-item"><a class="nav-link" href="index.html">Main Page</a></li>
+    <li class="nav-item"><a class="nav-link" href="gpa.html">GPA Calculator</a></li>
+    <li class="nav-item"><a class="nav-link" href="timer.html">Pomodoro Timer</a></li>
+  </ul>
+  <div class="form-check form-switch text-white ms-3">
+    <input class="form-check-input" type="checkbox" onclick="toggleDarkMode()">
+    <label class="form-check-label">Dark Mode</label>
+  </div>
 </nav>
 
 <div class="container">
@@ -37,25 +73,26 @@ body{ min-height:100vh; background: linear-gradient(135deg,#800000,#FFD700); fon
 function toggleDarkMode(){ document.body.classList.toggle("dark-mode") }
 let time=1500, timer;
 function updateTimer(){
-let minutes=Math.floor(time/60), seconds=time%60
-if(minutes<10) minutes="0"+minutes
-if(seconds<10) seconds="0"+seconds
-document.getElementById("timerDisplay").innerText=minutes+":"+seconds
+  let minutes=Math.floor(time/60), seconds=time%60
+  if(minutes<10) minutes="0"+minutes
+  if(seconds<10) seconds="0"+seconds
+  document.getElementById("timerDisplay").innerText=minutes+":"+seconds
 }
 function startTimer(){
-clearInterval(timer)
-timer=setInterval(function(){
-time--
-updateTimer()
-if(time<=0){
-clearInterval(timer)
-let bell=new Audio("https://www.soundjay.com/buttons/sounds/bell-ringing-05.mp3")
-bell.play()
-alert("Pomodoro Session Finished!")
-}
-},1000)
+  clearInterval(timer)
+  timer=setInterval(function(){
+    time--
+    updateTimer()
+    if(time<=0){
+      clearInterval(timer)
+      let bell=new Audio("https://www.soundjay.com/buttons/sounds/bell-ringing-05.mp3")
+      bell.play()
+      alert("Pomodoro Session Finished!")
+    }
+  },1000)
 }
 function resetTimer(){ clearInterval(timer); time=1500; updateTimer() }
 </script>
+
 </body>
 </html>

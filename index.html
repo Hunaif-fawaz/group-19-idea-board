@@ -15,21 +15,15 @@ color:white;
 padding:20px;
 transition:0.3s;
 }
-
-/* DARK MODE */
 .dark-mode{
 background:#111 !important;
 color:white;
 }
-
-/* NAVBAR */
 .navbar{
 background: rgba(128,0,0,0.9);
 backdrop-filter: blur(12px);
 border-radius:10px;
 }
-
-/* UCSC LOGO */
 .ucsc-logo{
 height:40px;
 width:40px;
@@ -38,8 +32,6 @@ border-radius:50%;
 object-fit:cover;
 border:2px solid gold;
 }
-
-/* GLASSMORPHISM */
 .glass-card{
 background: rgba(255,255,255,0.15);
 backdrop-filter: blur(12px);
@@ -48,34 +40,26 @@ padding:25px;
 box-shadow:0 8px 32px rgba(0,0,0,0.2);
 border:1px solid rgba(255,255,255,0.2);
 margin-bottom:20px;
-
 animation: fadeIn 1s ease forwards;
 }
-
-/* SIDEBAR */
 .sidebar{
 min-height:300px;
 }
-
 .sidebar li{
 transition:0.3s;
 padding:6px;
 border-radius:6px;
 }
-
 .sidebar li:hover{
 transform:scale(1.05);
 background:rgba(255,215,0,0.3);
 box-shadow:0 0 10px gold;
 cursor:pointer;
 }
-
-/* IDEA BOARD */
 .title{
 text-align:center;
 margin-bottom:15px;
 }
-
 .logo{
 display:block;
 margin:0 auto 10px auto;
@@ -83,36 +67,29 @@ width:60px;
 border-radius:50%;
 border:2px solid white;
 }
-
 .idea-item{
 background:rgba(255,255,255,0.25);
 border-radius:10px;
 padding:10px;
 margin-bottom:10px;
 }
-
 .suggested{
 font-size:0.9em;
 font-style:italic;
 opacity:0.8;
 }
-
 .vote-btn{
 margin-left:10px;
 cursor:pointer;
 }
-
 .center-dropdown{
 max-width:220px;
 margin:auto;
 }
-
 .total-box{
 text-align:center;
 margin-top:10px;
 }
-
-/* ANIMATION */
 @keyframes fadeIn{
 0%{
 opacity:0;
@@ -135,12 +112,9 @@ transform:translateY(0);
 Student Toolkit
 </a>
 <ul class="navbar-nav ms-auto">
-<li class="nav-item">
-<a class="nav-link" href="gpa.html">GPA Calculator</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="timer.html">Pomodoro Timer</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="index.html">Main Page</a></li>
+<li class="nav-item"><a class="nav-link" href="gpa.html">GPA Calculator</a></li>
+<li class="nav-item"><a class="nav-link" href="timer.html">Pomodoro Timer</a></li>
 </ul>
 <div class="form-check form-switch text-white ms-3">
 <input class="form-check-input" type="checkbox" onclick="toggleDarkMode()">
@@ -151,7 +125,6 @@ Student Toolkit
 <div class="container-fluid">
 <div class="row">
 
-<!-- SIDEBAR -->
 <div class="col-md-3">
 <div class="glass-card sidebar">
 <h4>Upcoming Events</h4>
@@ -164,10 +137,7 @@ Student Toolkit
 </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <div class="col-md-9">
-
-<!-- IDEA BOARD -->
 <div class="glass-card">
 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo">
 <h3 class="title">💡 Group Idea Board</h3>
@@ -202,25 +172,18 @@ Student Toolkit
 Total Ideas: <span id="totalIdeas">0</span>
 </div>
 </div>
-
 </div>
 </div>
 </div>
 
 <script>
-/* DARK MODE */
-function toggleDarkMode(){
-document.body.classList.toggle("dark-mode")
-}
+function toggleDarkMode(){document.body.classList.toggle("dark-mode")}
 
 /* IDEA BOARD */
 function addIdea(){
 let name=document.getElementById("name").value
 let idea=document.getElementById("idea").value
-if(name=="" || idea==""){
-alert("Please select name and enter idea")
-return
-}
+if(name=="" || idea==""){alert("Please select name and enter idea"); return}
 let list=document.getElementById("ideaList")
 let li=document.createElement("li")
 li.className="idea-item"
@@ -236,27 +199,21 @@ document.getElementById("idea").value=""
 updateTotal()
 filterIdeas()
 }
-function clearInput(){ document.getElementById("idea").value="" }
+function clearInput(){document.getElementById("idea").value=""}
 function filterIdeas(){
 let selectedUser=document.getElementById("name").value
 let ideas=document.querySelectorAll(".idea-item")
 ideas.forEach(function(item){
 let ideaUser=item.getAttribute("data-user")
-item.style.display = (selectedUser=="" || selectedUser==ideaUser) ? "block" : "none"
+item.style.display=(selectedUser=="" || selectedUser==ideaUser)?"block":"none"
 })
 }
 function updateTotal(){
 let total=document.querySelectorAll(".idea-item").length
 document.getElementById("totalIdeas").innerText=total
 }
-function likeIdea(btn){
-let count=btn.querySelector("span")
-count.innerText=parseInt(count.innerText)+1
-}
-function dislikeIdea(btn){
-let count=btn.querySelector("span")
-count.innerText=parseInt(count.innerText)+1
-}
+function likeIdea(btn){let count=btn.querySelector("span"); count.innerText=parseInt(count.innerText)+1}
+function dislikeIdea(btn){let count=btn.querySelector("span"); count.innerText=parseInt(count.innerText)+1}
 </script>
 
 </body>
