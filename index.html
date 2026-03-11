@@ -189,7 +189,7 @@ if(name=="" || idea==""){alert("Please select name and enter idea"); return}
 /* CHECK FOR DUPLICATE IDEAS */
 let ideas=document.querySelectorAll(".idea-item")
 for(let i=0;i<ideas.length;i++){
-let existingIdea=ideas[i].childNodes[0].textContent.trim().toLowerCase()
+let existingIdea=ideas[i].getAttribute("data-idea")
 if(existingIdea===idea.trim().toLowerCase()){
 alert("This idea has already been submitted!")
 return
@@ -200,12 +200,29 @@ let list=document.getElementById("ideaList")
 let li=document.createElement("li")
 li.className="idea-item"
 li.setAttribute("data-user",name)
-li.innerHTML=`
-${idea}
-<span class="suggested"> – suggested by ${name}</span>
-<span class="vote-btn" onclick="likeIdea(this)">👍 <span>0</span></span>
-<span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
-`
+li.setAttribute("data-idea",idea.trim().toLowerCase())
+
+/* SAFE TEXT INSERTION (allows symbols and code as text) */
+let ideaText=document.createTextNode(idea)
+li.appendChild(ideaText)
+
+let suggested=document.createElement("span")
+suggested.className="suggested"
+suggested.innerText=" – suggested by "+name
+li.appendChild(suggested)
+
+let like=document.createElement("span")
+like.className="vote-btn"
+like.innerHTML='👍 <span>0</span>'
+like.onclick=function(){likeIdea(this)}
+li.appendChild(like)
+
+let dislike=document.createElement("span")
+dislike.className="vote-btn"
+dislike.innerHTML='👎 <span>0</span>'
+dislike.onclick=function(){dislikeIdea(this)}
+li.appendChild(dislike)
+
 list.appendChild(li)
 
 document.getElementById("idea").value=""
