@@ -67,29 +67,45 @@ width:60px;
 border-radius:50%;
 border:2px solid white;
 }
+
+/* IDEA CARD */
 .idea-item{
 background:rgba(255,255,255,0.25);
 border-radius:10px;
 padding:10px;
 margin-bottom:10px;
 }
+
+/* LIMIT LONG IDEAS */
+.idea-text{
+display:-webkit-box;
+-webkit-line-clamp:3;
+-webkit-box-orient:vertical;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
 .suggested{
 font-size:0.9em;
 font-style:italic;
 opacity:0.8;
 }
+
 .vote-btn{
 margin-left:10px;
 cursor:pointer;
 }
+
 .center-dropdown{
 max-width:220px;
 margin:auto;
 }
+
 .total-box{
 text-align:center;
 margin-top:10px;
 }
+
 @keyframes fadeIn{
 0%{opacity:0;transform:translateY(20px);}
 100%{opacity:1;transform:translateY(0);}
@@ -174,7 +190,6 @@ Total Ideas: <span id="totalIdeas">0</span>
 
 function toggleDarkMode(){document.body.classList.toggle("dark-mode")}
 
-/* LOAD IDEAS WHEN PAGE OPENS */
 window.onload=function(){
 let savedIdeas=JSON.parse(localStorage.getItem("ideas")) || []
 savedIdeas.forEach(function(data){
@@ -189,15 +204,14 @@ savedIdeas.push({name:name,idea:idea})
 localStorage.setItem("ideas",JSON.stringify(savedIdeas))
 }
 
-/* IDEA BOARD */
 function addIdea(){
 let name=document.getElementById("name").value
 let idea=document.getElementById("idea").value
 
 if(name=="" || idea==""){alert("Please select name and enter idea"); return}
 
-/* CHECK DUPLICATE */
 let savedIdeas=JSON.parse(localStorage.getItem("ideas")) || []
+
 for(let i=0;i<savedIdeas.length;i++){
 if(savedIdeas[i].idea.trim().toLowerCase()==idea.trim().toLowerCase()){
 alert("This idea has already been submitted!")
@@ -216,12 +230,16 @@ filterIdeas()
 function displayIdea(name,idea){
 
 let list=document.getElementById("ideaList")
+
 let li=document.createElement("li")
 li.className="idea-item"
 li.setAttribute("data-user",name)
 
-let ideaText=document.createTextNode(idea)
-li.appendChild(ideaText)
+/* IDEA TEXT WITH LIMIT */
+let ideaSpan=document.createElement("span")
+ideaSpan.className="idea-text"
+ideaSpan.innerText=idea
+li.appendChild(ideaSpan)
 
 let suggested=document.createElement("span")
 suggested.className="suggested"
