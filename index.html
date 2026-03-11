@@ -91,21 +91,14 @@ text-align:center;
 margin-top:10px;
 }
 @keyframes fadeIn{
-0%{
-opacity:0;
-transform:translateY(20px);
-}
-100%{
-opacity:1;
-transform:translateY(0);
-}
+0%{opacity:0;transform:translateY(20px);}
+100%{opacity:1;transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark px-3 mb-4">
 <a class="navbar-brand fw-bold d-flex align-items-center">
 <img src="ucsc.png" class="ucsc-logo">
@@ -156,6 +149,7 @@ Student Toolkit
 <option>Thaviru</option>
 </select>
 </div>
+
 <div class="col-12">
 <input type="text" id="idea" class="form-control" placeholder="Enter your idea">
 </div>
@@ -177,7 +171,23 @@ Total Ideas: <span id="totalIdeas">0</span>
 </div>
 
 <script>
+
 function toggleDarkMode(){document.body.classList.toggle("dark-mode")}
+
+/* LOAD IDEAS WHEN PAGE OPENS */
+window.onload=function(){
+let savedIdeas=JSON.parse(localStorage.getItem("ideas")) || []
+savedIdeas.forEach(function(data){
+displayIdea(data.name,data.idea)
+})
+updateTotal()
+}
+
+function saveIdea(name,idea){
+let savedIdeas=JSON.parse(localStorage.getItem("ideas")) || []
+savedIdeas.push({name:name,idea:idea})
+localStorage.setItem("ideas",JSON.stringify(savedIdeas))
+}
 
 /* IDEA BOARD */
 function addIdea(){
@@ -186,23 +196,30 @@ let idea=document.getElementById("idea").value
 
 if(name=="" || idea==""){alert("Please select name and enter idea"); return}
 
-/* CHECK FOR DUPLICATE IDEAS */
-let ideas=document.querySelectorAll(".idea-item")
-for(let i=0;i<ideas.length;i++){
-let existingIdea=ideas[i].getAttribute("data-idea")
-if(existingIdea===idea.trim().toLowerCase()){
+/* CHECK DUPLICATE */
+let savedIdeas=JSON.parse(localStorage.getItem("ideas")) || []
+for(let i=0;i<savedIdeas.length;i++){
+if(savedIdeas[i].idea.trim().toLowerCase()==idea.trim().toLowerCase()){
 alert("This idea has already been submitted!")
 return
 }
 }
 
+displayIdea(name,idea)
+saveIdea(name,idea)
+
+document.getElementById("idea").value=""
+updateTotal()
+filterIdeas()
+}
+
+function displayIdea(name,idea){
+
 let list=document.getElementById("ideaList")
 let li=document.createElement("li")
 li.className="idea-item"
 li.setAttribute("data-user",name)
-li.setAttribute("data-idea",idea.trim().toLowerCase())
 
-/* SAFE TEXT INSERTION (allows symbols and code as text) */
 let ideaText=document.createTextNode(idea)
 li.appendChild(ideaText)
 
@@ -225,9 +242,6 @@ li.appendChild(dislike)
 
 list.appendChild(li)
 
-document.getElementById("idea").value=""
-updateTotal()
-filterIdeas()
 }
 
 function clearInput(){document.getElementById("idea").value=""}
@@ -255,6 +269,7 @@ function dislikeIdea(btn){
 let count=btn.querySelector("span")
 count.innerText=parseInt(count.innerText)+1
 }
+
 </script>
 
 </body>
