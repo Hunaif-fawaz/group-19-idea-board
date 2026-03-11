@@ -183,7 +183,19 @@ function toggleDarkMode(){document.body.classList.toggle("dark-mode")}
 function addIdea(){
 let name=document.getElementById("name").value
 let idea=document.getElementById("idea").value
+
 if(name=="" || idea==""){alert("Please select name and enter idea"); return}
+
+/* CHECK FOR DUPLICATE IDEAS */
+let ideas=document.querySelectorAll(".idea-item")
+for(let i=0;i<ideas.length;i++){
+let existingIdea=ideas[i].childNodes[0].textContent.trim().toLowerCase()
+if(existingIdea===idea.trim().toLowerCase()){
+alert("This idea has already been submitted!")
+return
+}
+}
+
 let list=document.getElementById("ideaList")
 let li=document.createElement("li")
 li.className="idea-item"
@@ -195,11 +207,14 @@ ${idea}
 <span class="vote-btn" onclick="dislikeIdea(this)">👎 <span>0</span></span>
 `
 list.appendChild(li)
+
 document.getElementById("idea").value=""
 updateTotal()
 filterIdeas()
 }
+
 function clearInput(){document.getElementById("idea").value=""}
+
 function filterIdeas(){
 let selectedUser=document.getElementById("name").value
 let ideas=document.querySelectorAll(".idea-item")
@@ -208,12 +223,21 @@ let ideaUser=item.getAttribute("data-user")
 item.style.display=(selectedUser=="" || selectedUser==ideaUser)?"block":"none"
 })
 }
+
 function updateTotal(){
 let total=document.querySelectorAll(".idea-item").length
 document.getElementById("totalIdeas").innerText=total
 }
-function likeIdea(btn){let count=btn.querySelector("span"); count.innerText=parseInt(count.innerText)+1}
-function dislikeIdea(btn){let count=btn.querySelector("span"); count.innerText=parseInt(count.innerText)+1}
+
+function likeIdea(btn){
+let count=btn.querySelector("span")
+count.innerText=parseInt(count.innerText)+1
+}
+
+function dislikeIdea(btn){
+let count=btn.querySelector("span")
+count.innerText=parseInt(count.innerText)+1
+}
 </script>
 
 </body>
